@@ -26,3 +26,27 @@ Make examples for this keyboard (after setting up your build environment), selec
     make keebio/bdn9/rev2:default
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+
+## TL;DR: Mac Make Instructions
+
+### Prerequisites
+
+1. ```bash
+   brew install qmk/qmk/qmk
+   ```
+1. ```bash
+   git clone --recurse-submodules git@github.com:metavida/qmk_firmware.git
+   ```
+1. ```bash
+   qmk setup metavida/qmk_firmware
+   ```
+1. Create a keymap:
+   ```bash
+   keyboards/keebio/bdn9/keymaps/default keyboards/keebio/bdn9/keymaps/metavida
+   ```
+
+### Compile Keymap
+
+1. ```bash
+   qmk compile -kb keebio/bdn9/rev1 -km metavida
+   ```
