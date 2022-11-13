@@ -25,49 +25,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
         Default layer, for common tasks.
         # Top row:
-        | Turn: Volume  |             | Turn: Brightness |
-        | Mute          | TBD         | Hold: Layer 2    |
+        | Turn: Volume  |               | Turn: Brightness |
+        | Mute          | Hold: Layer 2 | Toggle LEDs      |
         # Row 2:
-        | Prev Track    | Play/Pause  | Next Track       |
+        | Prev Track    | Play/Pause    | Next Track       |
         # Row 3:
-        | Zoom Mic Mute | Zoom Camera | TBD              |
+        | Zoom Mic Mute | Zoom Camera   | Toggle LEDs      |
      */
     [0] = LAYOUT(
-        KC_MUTE,       MO(1),            MO(1),
+        KC_MUTE,       MO(1),            RGB_TOG,
         KC_MPRV,       KC_MPLY,          KC_MNXT,
-        LCMD(S(KC_A)), C(A(LCMD(KC_D))), XXXXXXX
+        LCMD(S(KC_A)), C(A(LCMD(KC_D))), RGB_TOG
     ),
     /*
-        Light layer. Toggle on/off with bottom left key
+        Light layer!
         Initially stolen from the brandonschlack keymap
      */
     [1] = LAYOUT(
-        XXXXXXX, RGB_TOG, RGB_HUI,
+        XXXXXXX, XXXXXXX, RGB_HUI,
         RGB_RMOD,RGB_VAI, RGB_MOD,
-        RGB_TOG, RGB_VAD, RGB_HUD
+        RGB_TOG, RGB_VAD, RGB_RMOD
     ),
 };
 
-bool encoder_update_user(uint8_t index, bool clockwise) {
+bool encoder_update_user(uint8_t index, bool counter_clockwise) {
     if (index == _LEFT) {
-        if (clockwise) {
-            tap_code(KC_VOLU);
-        } else {
+        if (counter_clockwise) {
             tap_code(KC_VOLD);
+        } else {
+            tap_code(KC_VOLU);
         }
     }
     else if (index == _MIDDLE) {
-        if (clockwise) {
+        if (counter_clockwise) {
             tap_code(KC_DOWN);
         } else {
             tap_code(KC_UP);
         }
     }
     else if (index == _RIGHT) {
-        if (clockwise) {
-            tap_code(KC_BRIU);
-        } else {
+        if (counter_clockwise) {
             tap_code(KC_BRID);
+        } else {
+            tap_code(KC_BRIU);
         }
     }
     return false;
