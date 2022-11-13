@@ -45,8 +45,14 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
    keyboards/keebio/bdn9/keymaps/default keyboards/keebio/bdn9/keymaps/metavida
    ```
 
-### Compile Keymap
+### Compile & Flash Keymap
 
 1. ```bash
    qmk compile -kb keebio/bdn9/rev1 -km metavida
    ```
+1. Launch the QMK Toolbox app
+1. Open the `/Users/marcoswk/workspace/qmk_firmware/.build/keebio_bdn9_rev1_metavida.hex` file
+1. Plug in the BDN9 keyboard. Console should read: "HID console connected: Keebio BDN9 Rev. 1"
+1. Hold the reset button for 1 second, then let go. Console should read: "Caterina device connected: Arduino LLC Arduino Micro"
+1. Click the "Flash" button.
+1. Enjoy the new keymap!
