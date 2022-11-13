@@ -23,25 +23,28 @@ enum encoder_names {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
-        | Knob 1: Vol Dn/Up |      | Knob 2: Page Dn/Up |
-        | Press: Mute       | Home | Press: Play/Pause  |
-        | Hold: Layer 2     | Up   | RGB Mode           |
-        | Left              | Down | Right              |
+        Default layer, for common tasks.
+        # Top row:
+        | Turn: Volume  |             | Turn: Brightness |
+        | Mute          | TBD         | Hold: Layer 2    |
+        # Row 2:
+        | Prev Track    | Play/Pause  | Next Track       |
+        # Row 3:
+        | Zoom Mic Mute | Zoom Camera | TBD              |
      */
     [0] = LAYOUT(
-        KC_MUTE, KC_HOME, KC_MPLY,
-        MO(1)  , KC_UP  , RGB_MOD,
-        KC_LEFT, KC_DOWN, KC_RGHT
+        KC_MUTE,       MO(1),            MO(1),
+        KC_MPRV,       KC_MPLY,          KC_MNXT,
+        LCMD(S(KC_A)), C(A(LCMD(KC_D))), XXXXXXX
     ),
     /*
-        | QK_BOOT          | N/A  | Media Stop |
-        | Held: Layer 2  | Home | RGB Mode   |
-        | Media Previous | End  | Media Next |
+        Light layer. Toggle on/off with bottom left key
+        Initially stolen from the brandonschlack keymap
      */
     [1] = LAYOUT(
-        QK_BOOT  , BL_STEP, KC_STOP,
-        _______, KC_HOME, RGB_MOD,
-        KC_MPRV, KC_END , KC_MNXT
+        XXXXXXX, RGB_TOG, RGB_HUI,
+        RGB_RMOD,RGB_VAI, RGB_MOD,
+        RGB_TOG, RGB_VAD, RGB_HUD
     ),
 };
 
@@ -62,9 +65,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     }
     else if (index == _RIGHT) {
         if (clockwise) {
-            tap_code(KC_PGDN);
+            tap_code(KC_BRIU);
         } else {
-            tap_code(KC_PGUP);
+            tap_code(KC_BRID);
         }
     }
     return false;
