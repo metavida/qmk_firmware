@@ -21,6 +21,9 @@ enum encoder_names {
   _MIDDLE,
 };
 
+#define KC_ZMIC LCMD(S(KC_A))
+#define KC_ZVID C(A(LCMD(KC_D)))
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
         Default layer, for common tasks.
@@ -33,9 +36,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         | Zoom Mic Mute | Zoom Camera   | Toggle LEDs      |
      */
     [0] = LAYOUT(
-        KC_MUTE,       MO(1),            RGB_TOG,
-        KC_MPRV,       KC_MPLY,          KC_MNXT,
-        LCMD(S(KC_A)), C(A(LCMD(KC_D))), RGB_TOG
+        KC_MUTE,  MO(1),    RGB_TOG,
+        KC_MPRV,  KC_MPLY,  KC_MNXT,
+        KC_ZMIC,  KC_ZVID, RGB_TOG
     ),
     /*
         Light layer!
