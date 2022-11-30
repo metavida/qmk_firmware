@@ -21,33 +21,60 @@ enum encoder_names {
   _MIDDLE,
 };
 
+enum my_layers {
+    _MUSIC = 0,
+    _ZOOM,
+    _LIGHTS
+};
+
+#define MUSIC  TO(_MUSIC)
+#define ZOOM   TO(_ZOOM)
+#define LIGHTS TO(_LIGHTS)
+
 #define KC_ZMIC LCMD(S(KC_A))
 #define KC_ZVID C(A(LCMD(KC_D)))
+#define KC_ZCHAT C(A(LCMD(KC_C)))
+#define KC_ZPAU C(A(LCMD(KC_T)))
+#define KC_ZDUAL C(A(LCMD(KC_V)))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
-        Default layer, for common tasks.
+        Enjoying some tunes!
         # Top row:
-        | Turn: Volume  |               | Turn: Brightness |
-        | Mute          | Hold: Layer 2 | Toggle LEDs      |
-        # Row 2:
-        | Prev Track    | Play/Pause    | Next Track       |
-        # Row 3:
-        | Zoom Mic Mute | Zoom Camera   | Toggle LEDs      |
+        | Turn: Volume |               | Turn: Brightness |
+        | Mute         | To Zoom layer | To Lights layer  |
+        | Prev Track   | Play/Pause    | Next Track       |
+        | ____________ | _____________ | Toggle LEDs      |
      */
-    [0] = LAYOUT(
-        KC_MUTE,  MO(1),    RGB_TOG,
-        KC_MPRV,  KC_MPLY,  KC_MNXT,
+    [_MUSIC] = LAYOUT(
+        KC_MUTE,  ZOOM,    LIGHTS,
+        KC_MPRV,  KC_MPLY, KC_MNXT,
+        _______,  _______, RGB_TOG
+    ),
+    /*
+        Time for a meeting
+        # Top row:
+        | Turn: Volume   |                  | Turn: Brightness |
+        | Mute           | To Music layer   | To Lights layer  |
+        | Show/Hide Chat | Pause Scrn Share | Dual Monitors    |
+        | Zoom Mic Mute  | Zoom Camera      | Toggle LEDs      |
+     */
+    [_ZOOM] = LAYOUT(
+        KC_MUTE,  MUSIC,   LIGHTS,
+        KC_ZCHAT, KC_ZPAU, KC_ZDUAL,
         KC_ZMIC,  KC_ZVID, RGB_TOG
     ),
     /*
         Light layer!
-        Initially stolen from the brandonschlack keymap
+        | Turn: Volume  |                | Turn: Brightness |
+        | _____________ | To Music layer | To Zoom layer    |
+        | Next pattern  | ______________ | Prev pattern     |
+        | _____________ | ______________ | ________________ |
      */
-    [1] = LAYOUT(
-        XXXXXXX, XXXXXXX, RGB_HUI,
+    [_LIGHTS] = LAYOUT(
+        XXXXXXX, MUSIC, ZOOM,
         RGB_RMOD,RGBLIGHT_MODE_RAINBOW_MOOD, RGB_MOD,
-        RGBLIGHT_MODE_STATIC_GRADIENT, RGBLIGHT_MODE_KNIGHT, RGBLIGHT_MODE_RAINBOW_SWIRL
+        XXXXXXX, XXXXXXX, XXXXXXX
     ),
 };
 
