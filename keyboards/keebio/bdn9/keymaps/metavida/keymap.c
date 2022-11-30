@@ -78,26 +78,79 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
+bool music_mode = false;
+bool zoom_mode = false;
+bool lights_mode = false;
+bool base_mode = false;
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    music_mode = false;
+    zoom_mode = false;
+    lights_mode = false;
+    base_mode = false;
+
+    switch (get_highest_layer(state)) {
+    case _MUSIC:
+        music_mode = true; // For use in encoder evaluation
+        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
+        break;
+    case _ZOOM:
+        zoom_mode = true; // For use in encoder evaluation
+        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_sethsv_noeeprom(HSV_BLUE);
+        break;
+    case _LIGHTS:
+        lights_mode = true; // For use in encoder evaluation
+        rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE);
+        rgblight_sethsv_noeeprom(HSV_ORANGE);
+        break;
+    default: //  for any other layers, or the default layer
+        base_mode = true;
+        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        rgblight_sethsv_noeeprom(HSV_RED);
+        break;
+    }
+    return state;
+}
+
+void keyboard_post_init_user(void) {
+    // Call the post init code.
+    rgblight_enable_noeeprom(); // enables Rgb, without saving settings
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); // to static light without saving
+    rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
+}
+
 bool encoder_update_user(uint8_t index, bool counter_clockwise) {
-    if (index == _LEFT) {
-        if (counter_clockwise) {
-            tap_code(KC_VOLD);
-        } else {
-            tap_code(KC_VOLU);
+    if(lights_mode == true) {
+        if (index == _LEFT) {
+            if (counter_clockwise) {
+                rgblight_increase_hue();
+            } else {
+                rgblight_decrease_hue();
+            }
         }
-    }
-    else if (index == _MIDDLE) {
-        if (counter_clockwise) {
-            tap_code(KC_DOWN);
-        } else {
-            tap_code(KC_UP);
+        else if (index == _RIGHT) {
+            if (counter_clockwise) {
+                rgblight_increase_sat();
+            } else {
+                rgblight_decrease_sat();
+            }
         }
-    }
-    else if (index == _RIGHT) {
-        if (counter_clockwise) {
-            tap_code(KC_BRID);
-        } else {
-            tap_code(KC_BRIU);
+    } else {
+        if (index == _LEFT) {
+            if (counter_clockwise) {
+                tap_code(KC_VOLD);
+            } else {
+                tap_code(KC_VOLU);
+            }
+        }
+        else if (index == _RIGHT) {
+            if (counter_clockwise) {
+                tap_code(KC_BRID);
+            } else {
+                tap_code(KC_BRIU);
+            }
         }
     }
     return false;
