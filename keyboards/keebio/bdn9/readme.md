@@ -45,6 +45,16 @@ See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_to
    keyboards/keebio/bdn9/keymaps/default keyboards/keebio/bdn9/keymaps/metavida
    ```
 
+#### Debugging
+
+The following 2 were unliked so I needed to configure them:
+
+```
+export PATH="/usr/local/opt/arm-none-eabi-gcc@8/bin:$PATH"
+export PATH="/usr/local/Cellar/avr-gcc@8/8.5.0/bin:$PATH"
+```
+
+
 ### Compile & Flash Keymap
 
 1. ```bash
