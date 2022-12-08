@@ -27,54 +27,57 @@ enum my_layers {
     _LIGHTS
 };
 
-#define MUSIC  TO(_MUSIC)
-#define ZOOM   TO(_ZOOM)
-#define LIGHTS TO(_LIGHTS)
+#define TO_MUSIC  TO(_MUSIC)
+#define TO_ZOOM   TO(_ZOOM)
+#define TO_LIGHTS TO(_LIGHTS)
 
-#define KC_ZMIC LCMD(S(KC_A))
-#define KC_ZVID C(A(LCMD(KC_D)))
-#define KC_ZCHAT C(A(LCMD(KC_C)))
-#define KC_ZPAU C(A(LCMD(KC_T)))
-#define KC_ZDUAL C(A(LCMD(KC_V)))
+// Each of the following is configured
+// as a global shortcut in the Zoom app.
+#define KC_ZMIC LCMD(S(KC_A))     // Toggle microphone mute
+#define KC_ZVID C(A(LCMD(KC_D)))  // Toggle video
+#define KC_ZCHAT C(A(LCMD(KC_C))) // Show/Hide chat
+#define KC_ZPAU C(A(LCMD(KC_T)))  // Pause/Play Screen Share
+#define KC_ZDUAL C(A(LCMD(KC_V))) // Toggle Dual Monitor mode
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    /*
-        Enjoying some tunes!
-        # Top row:
-        | Turn: Volume |               | Turn: Brightness |
-        | Mute         | To Zoom layer | To Lights layer  |
-        | Prev Track   | Play/Pause    | Next Track       |
-        | ____________ | _____________ | Toggle LEDs      |
-     */
+
     [_MUSIC] = LAYOUT(
-        KC_MUTE,  ZOOM,    LIGHTS,
-        KC_MPRV,  KC_MPLY, KC_MNXT,
-        _______,  _______, RGB_TOG
+    //    Enjoying some tunes!
+    //  ⸝───────⸜          ⸝───────⸜
+    // ⎸ KC_VOL* ⎹         ⎸ KC_BRI* ⎹
+    // ┌────────┬────────┬─────────┐
+        KC_MUTE, TO_ZOOM, TO_LIGHTS,
+    // ├────────┼────────┼─────────┤
+    //   Prev    Play/Pau   Next
+        KC_MPRV, KC_MPLY, KC_MNXT,
+    // ├────────┼────────┼─────────┤
+        _______, _______, RGB_TOG
+    // └────────┴────────┴─────────┘
     ),
-    /*
-        Time for a meeting
-        # Top row:
-        | Turn: Volume   |                  | Turn: Brightness |
-        | Mute           | To Music layer   | To Lights layer  |
-        | Show/Hide Chat | Pause Scrn Share | Dual Monitors    |
-        | Zoom Mic Mute  | Zoom Camera      | Toggle LEDs      |
-     */
     [_ZOOM] = LAYOUT(
-        KC_MUTE,  MUSIC,   LIGHTS,
-        KC_ZCHAT, KC_ZPAU, KC_ZDUAL,
-        KC_ZMIC,  KC_ZVID, RGB_TOG
+    //     Time for a meeting
+    //  ⸝───────⸜           ⸝────────⸜
+    // ⎸ KC_VOL* ⎹          ⎸ KC_BRI*  ⎹
+    // ┌─────────┬─────────┬─────────┐
+        KC_MUTE,  TO_MUSIC, TO_LIGHTS,
+    // ├─────────┼─────────┼─────────┤
+        KC_ZCHAT, KC_ZPAU,  KC_ZDUAL,
+    // ├─────────┼─────────┼─────────┤
+        KC_ZMIC,  KC_ZVID,  RGB_TOG
+    // └─────────┴─────────┴─────────┘
     ),
-    /*
-        Light layer!
-        | Turn: Volume  |                | Turn: Brightness |
-        | _____________ | To Music layer | To Zoom layer    |
-        | Next pattern  | ______________ | Prev pattern     |
-        | _____________ | ______________ | ________________ |
-     */
     [_LIGHTS] = LAYOUT(
-        XXXXXXX, MUSIC, ZOOM,
-        RGB_RMOD,RGBLIGHT_MODE_RAINBOW_MOOD, RGB_MOD,
-        XXXXXXX, XXXXXXX, XXXXXXX
+    //     Light layer!
+    //  ⸝───────⸜           ⸝────────⸜
+    // ⎸ RBG hue ⎹          ⎸ RGB sat  ⎹
+    // ┌─────────┬─────────┬─────────┐
+        ________, TO_MUSIC, TO_ZOOM,
+    // ├─────────┼─────────┼─────────┤
+    //   Next                Prev
+        RGB_RMOD, ________, RGB_MOD,
+    // ├─────────┼─────────┼─────────┤
+        ________, ________, ________
+    // └─────────┴─────────┴─────────┘
     ),
 };
 
