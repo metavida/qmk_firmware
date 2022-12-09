@@ -22,9 +22,9 @@ enum encoder_names {
 };
 
 enum my_layers {
-    _MUSIC = 0,
-    _ZOOM,
-    _LIGHTS
+  _MUSIC = 0,
+  _ZOOM,
+  _LIGHTS
 };
 
 #define TO_MUSIC  TO(_MUSIC)
@@ -41,44 +41,44 @@ enum my_layers {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [_MUSIC] = LAYOUT(
-    //    Enjoying some tunes!
-    //  ⸝───────⸜          ⸝───────⸜
-    // ⎸ KC_VOL* ⎹         ⎸ KC_BRI* ⎹
-    // ┌────────┬────────┬─────────┐
-        KC_MUTE, TO_ZOOM, TO_LIGHTS,
-    // ├────────┼────────┼─────────┤
-    //   Prev    Play/Pau   Next
-        KC_MPRV, KC_MPLY, KC_MNXT,
-    // ├────────┼────────┼─────────┤
-        _______, _______, RGB_TOG
-    // └────────┴────────┴─────────┘
-    ),
-    [_ZOOM] = LAYOUT(
-    //     Time for a meeting
-    //  ⸝───────⸜           ⸝────────⸜
-    // ⎸ KC_VOL* ⎹          ⎸ KC_BRI*  ⎹
-    // ┌─────────┬─────────┬─────────┐
-        KC_MUTE,  TO_MUSIC, TO_LIGHTS,
-    // ├─────────┼─────────┼─────────┤
-        KC_ZCHAT, KC_ZPAU,  KC_ZDUAL,
-    // ├─────────┼─────────┼─────────┤
-        KC_ZMIC,  KC_ZVID,  RGB_TOG
-    // └─────────┴─────────┴─────────┘
-    ),
-    [_LIGHTS] = LAYOUT(
-    //     Light layer!
-    //  ⸝───────⸜           ⸝────────⸜
-    // ⎸ RBG hue ⎹          ⎸ RGB sat  ⎹
-    // ┌─────────┬─────────┬─────────┐
-        ________, TO_MUSIC, TO_ZOOM,
-    // ├─────────┼─────────┼─────────┤
-    //   Next                Prev
-        RGB_RMOD, ________, RGB_MOD,
-    // ├─────────┼─────────┼─────────┤
-        ________, ________, ________
-    // └─────────┴─────────┴─────────┘
-    ),
+  [_MUSIC] = LAYOUT(
+  //    Enjoying some tunes!
+  //  ⸝───────⸜          ⸝───────⸜
+  // ⎸ KC_VOL* ⎹         ⎸ KC_BRI* ⎹
+  // ┌────────┬────────┬─────────┐
+      KC_MUTE, TO_ZOOM, TO_LIGHTS,
+  // ├────────┼────────┼─────────┤
+  //   Prev    Play/Pau   Next
+      KC_MPRV, KC_MPLY, KC_MNXT,
+  // ├────────┼────────┼─────────┤
+      _______, _______, RGB_TOG
+  // └────────┴────────┴─────────┘
+  ),
+  [_ZOOM] = LAYOUT(
+  //     Time for a meeting
+  //  ⸝───────⸜           ⸝────────⸜
+  // ⎸ KC_VOL* ⎹          ⎸ KC_BRI*  ⎹
+  // ┌─────────┬─────────┬─────────┐
+      KC_MUTE,  TO_MUSIC, TO_LIGHTS,
+  // ├─────────┼─────────┼─────────┤
+      KC_ZCHAT, KC_ZPAU,  KC_ZDUAL,
+  // ├─────────┼─────────┼─────────┤
+      KC_ZMIC,  KC_ZVID,  RGB_TOG
+  // └─────────┴─────────┴─────────┘
+  ),
+  [_LIGHTS] = LAYOUT(
+  //     Light layer!
+  //  ⸝───────⸜           ⸝────────⸜
+  // ⎸ RBG hue ⎹          ⎸ RGB sat  ⎹
+  // ┌─────────┬─────────┬─────────┐
+      ________, TO_MUSIC, TO_ZOOM,
+  // ├─────────┼─────────┼─────────┤
+  //   Next                Prev
+      RGB_RMOD, ________, RGB_MOD,
+  // ├─────────┼─────────┼─────────┤
+      ________, ________, ________
+  // └─────────┴─────────┴─────────┘
+  ),
 };
 
 bool music_mode = false;
@@ -87,74 +87,74 @@ bool lights_mode = false;
 bool base_mode = false;
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    music_mode = false;
-    zoom_mode = false;
-    lights_mode = false;
-    base_mode = false;
+  music_mode = false;
+  zoom_mode = false;
+  lights_mode = false;
+  base_mode = false;
 
-    switch (get_highest_layer(state)) {
+  switch (get_highest_layer(state)) {
     case _MUSIC:
-        music_mode = true; // For use in encoder evaluation
-        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
-        break;
+      music_mode = true; // For use in encoder evaluation
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+      rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
+      break;
     case _ZOOM:
-        zoom_mode = true; // For use in encoder evaluation
-        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_sethsv_noeeprom(HSV_BLUE);
-        break;
+      zoom_mode = true; // For use in encoder evaluation
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+      rgblight_sethsv_noeeprom(HSV_BLUE);
+      break;
     case _LIGHTS:
-        lights_mode = true; // For use in encoder evaluation
-        rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE);
-        rgblight_sethsv_noeeprom(HSV_ORANGE);
-        break;
+      lights_mode = true; // For use in encoder evaluation
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE);
+      rgblight_sethsv_noeeprom(HSV_ORANGE);
+      break;
     default: //  for any other layers, or the default layer
-        base_mode = true;
-        rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-        rgblight_sethsv_noeeprom(HSV_RED);
-        break;
-    }
-    return state;
+      base_mode = true;
+      rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+      rgblight_sethsv_noeeprom(HSV_RED);
+      break;
+  }
+  return state;
 }
 
 void keyboard_post_init_user(void) {
-    // Call the post init code.
-    rgblight_enable_noeeprom(); // enables Rgb, without saving settings
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); // to static light without saving
-    rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
+  // Call the post init code.
+  rgblight_enable_noeeprom(); // enables Rgb, without saving settings
+  rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT); // to static light without saving
+  rgblight_sethsv_noeeprom(HSV_CHARTREUSE);
 }
 
 bool encoder_update_user(uint8_t index, bool counter_clockwise) {
-    if(lights_mode == true) {
-        if (index == _LEFT) {
-            if (counter_clockwise) {
-                rgblight_increase_hue();
-            } else {
-                rgblight_decrease_hue();
-            }
-        }
-        else if (index == _RIGHT) {
-            if (counter_clockwise) {
-                rgblight_increase_sat();
-            } else {
-                rgblight_decrease_sat();
-            }
-        }
-    } else {
-        if (index == _LEFT) {
-            if (counter_clockwise) {
-                tap_code(KC_VOLD);
-            } else {
-                tap_code(KC_VOLU);
-            }
-        }
-        else if (index == _RIGHT) {
-            if (counter_clockwise) {
-                tap_code(KC_BRID);
-            } else {
-                tap_code(KC_BRIU);
-            }
-        }
+  if(lights_mode == true) {
+    if (index == _LEFT) {
+      if (counter_clockwise) {
+        rgblight_increase_hue();
+      } else {
+        rgblight_decrease_hue();
+      }
     }
-    return false;
+    else if (index == _RIGHT) {
+      if (counter_clockwise) {
+        rgblight_increase_sat();
+      } else {
+        rgblight_decrease_sat();
+      }
+    }
+  } else {
+    if (index == _LEFT) {
+      if (counter_clockwise) {
+        tap_code(KC_VOLD);
+      } else {
+        tap_code(KC_VOLU);
+      }
+    }
+    else if (index == _RIGHT) {
+      if (counter_clockwise) {
+        tap_code(KC_BRID);
+      } else {
+        tap_code(KC_BRIU);
+      }
+    }
+  }
+  return false;
 }
