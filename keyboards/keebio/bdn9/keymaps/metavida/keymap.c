@@ -21,6 +21,11 @@ enum encoder_names {
   _MIDDLE,
 };
 
+enum custom_keycodes {
+  CC_PAW = SAFE_RANGE, // Type :pawfive:<enter>
+  CC_ZMIC, // Toggle zoom microphone mute *and* change keypad color
+};
+
 enum my_layers {
   _MUSIC = 0,
   _ZOOM,
@@ -51,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   Prev    Play/Pau   Next
       KC_MPRV, KC_MPLY, KC_MNXT,
   // ├────────┼────────┼─────────┤
-      _______, _______, RGB_TOG
+      CC_PAW,  _______, RGB_TOG
   // └────────┴────────┴─────────┘
   ),
   [_ZOOM] = LAYOUT(
@@ -63,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├─────────┼─────────┼─────────┤
       KC_ZCHAT, KC_ZPAU,  KC_ZDUAL,
   // ├─────────┼─────────┼─────────┤
-      KC_ZMIC,  KC_ZVID,  RGB_TOG
+      CC_ZMIC,  KC_ZVID,  RGB_TOG
   // └─────────┴─────────┴─────────┘
   ),
   [_LIGHTS] = LAYOUT(
@@ -158,3 +163,21 @@ bool encoder_update_user(uint8_t index, bool counter_clockwise) {
   }
   return false;
 }
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case CC_PAW:
+      if (record->event.pressed) {
+        SEND_STRING(":pawfive: " SS_DELAY(100) SS_TAP(X_ENTER));
+      }
+      break;
+    case CC_ZMIC:
+      if (record->event.pressed) {
+        // TODO: Keep track of mute/unmute state & update color
+        SEND_STRING(SS_LCMD(SS_LSFT("a")));
+      }
+      break;
+  }
+
+  return true;
+};
