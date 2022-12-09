@@ -164,6 +164,8 @@ bool encoder_update_user(uint8_t index, bool counter_clockwise) {
   return false;
 }
 
+bool zoom_mute_mode = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case CC_PAW:
@@ -173,8 +175,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case CC_ZMIC:
       if (record->event.pressed) {
-        // TODO: Keep track of mute/unmute state & update color
         SEND_STRING(SS_LCMD(SS_LSFT("a")));
+        if (zoom_mute_mode) {
+          zoom_mute_mode = false;
+          rgblight_sethsv_noeeprom(HSV_BLUE);
+        } else {
+          zoom_mute_mode = true;
+          rgblight_sethsv_noeeprom(HSV_RED);
+        }
       }
       break;
   }
